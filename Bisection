@@ -1,0 +1,22 @@
+Bisection[f_, a0_, b0_, tol_, n_] :=
+ Module[{a = a0, b = b0, c, i = 1}, 
+  Print["n a b c f(c)"];
+  While[i <= n, 
+   c = (a + b)/2;
+   Print[NumberForm[i, 5], " ", NumberForm[a, {10, 8}], " ", 
+    NumberForm[b, {10, 8}], " ", NumberForm[c, {10, 8}], " ", 
+    NumberForm[f[c], {10, 8}]];
+   If[f[a]*f[c] < 0, b = c, a = c];
+   If[Abs[a - b] < tol, 
+    Print["The solution is: ", NumberForm[c, 16]]; 
+    Return[]];
+   i++];
+  Print["The maximum iteration failed and the solution without accuracy is: ", 
+   NumberForm[c, 16]];
+]
+
+f1[x_] := x^3 + 2 x^2 - 3 x - 1;
+f2[x_] := x^3 + 2 x^2 - 3 x - 3;
+f3[x_] := Sin[x];
+
+Bisection[f1, 0, 2, 10^(-7), 50]
