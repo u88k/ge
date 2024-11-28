@@ -1,0 +1,33 @@
+ClearAll[a, n, m, q, max, w, i, r, v, j, k, p, temp];
+
+a = {{3, 2, -4, 3}, {2, 3, 3, 15}, {5, -3, 1, 14}};
+Print[MatrixForm[a]];
+
+size = Dimensions[a];
+n = size[[1]];
+m = size[[2]];
+
+(* Gauss-Jordan Elimination Process *)
+For[i = 1, i <= n, i = i + 1,
+  maxtemp = Max[a[[i ;; n, i]]];
+  position = Position[a[[i ;; n, i]], maxtemp];
+  position = First[First[position]];
+  position = position + (i - 1);
+  a[[{i, position}]] = a[[{position, i}]]; (* Swap rows *)
+  
+  temp = a[[i, i]];
+  For[p = 1, p <= m, p = p + 1,
+    a[[i, p]] = a[[i, p]]/temp; (* Normalize the pivot row *)
+  ];
+  
+  For[j = 1, j <= n, j = j + 1,
+    If[i != j,
+      factor = a[[j, i]]/a[[i, i]];
+      For[k = 1, k <= m, k = k + 1,
+        a[[j, k]] = a[[j, k]] - a[[i, k]]*factor;
+      ];
+    ];
+  ];
+];
+
+Print[MatrixForm[a]];
