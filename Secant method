@@ -1,0 +1,23 @@
+SecantMethod[x0_, x1_, max_] := Module[{}, 
+  k = 1;
+  p0 = N[x0];
+  p1 = N[x1];
+  p2 = p1;
+ p1=p0;
+  Print["n x(n-1) x(n) x(n+1) f(x(n+1))"];
+  While[(k < max && Abs[f[p2]] > 5*10^(-7)), 
+   p0 = p1;
+   p1 = p2;
+   p2 = p1 - (f[p1]*(p1 - p0)/(f[p1] - f[p0]));
+   k = k + 1;
+   Print[k - 1, " ", PaddedForm[N[p0, 16], {10, 6}], " ", 
+    PaddedForm[N[p1, 16], {10, 6}], " ", 
+    PaddedForm[N[p2, 16], {10, 6}], " ", 
+    PaddedForm[N[f[p2]], {10, 6}]];
+  ];
+  Print["p", k, " = ", NumberForm[p2, 11]];
+  Print["f[p", k, "] = ", NumberForm[f[p2], 11]];
+]
+
+f[x_] := x^3 - 2*x - 5;
+SecantMethod[3, 2, 50]
