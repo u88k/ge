@@ -1,0 +1,35 @@
+Gausselim[A0_] := Module[{a = N[A0]}, 
+  Print[MatrixForm[a]];
+  size = Dimensions[a];
+  n = size[[1]];
+  m = size[[2]];
+  
+  (* Forward Elimination *)
+  For[i = 1, i <= n - 1, i = i + 1, 
+   For[k = i + 1, k <= n, k = k + 1, 
+    factor = a[[k, i]]/a[[i, i]];
+    For[p = i, p <= m, p = p + 1, 
+     a[[k, p]] = a[[k, p]] - factor*a[[i, p]];
+    ];
+   ];
+  ];
+  
+  Print[MatrixForm[a]];
+  
+  (* Back Substitution *)
+  ClearAll[x, i];
+  x[n] = a[[n, m]]/a[[n, n]];
+  Print["x[", n, "] = ", x[n]];
+  
+  For[i = n - 1, i >= 1, i = i - 1, 
+   s = 0;
+   For[j = i + 1, j <= n, j = j + 1, 
+    s = s + a[[i, j]]*x[j];
+   ];
+   x[i] = (a[[i, m]] - s)/a[[i, i]];
+   Print["x[", i, "] = ", x[i]];
+  ];
+]
+
+a = {{1, 2, 3, 1}, {2, 6, 10, 0}, {3, 14, 28, -8}};
+Gausselim[a]
