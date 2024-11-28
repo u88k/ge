@@ -1,0 +1,37 @@
+(* Define Euler's Method *)
+eulerMethod[a_, b_, h_, f_, y0_] := Module[
+  {n, xi, yi, OutputDetails},
+  
+  (* Number of steps *)
+  n = Round[(b - a)/h];
+  
+  (* Initialize x and y values *)
+  xi = Table[a + h*(j - 1), {j, 1, n + 1}];
+  yi = Table[0, {n + 1}];
+  yi[[1]] = y0;
+  
+  (* Initialize output details *)
+  OutputDetails = {{0, xi[[1]], y0}};
+  
+  (* Perform Euler's method *)
+  For[i = 1, i <= n, i++,
+   yi[[i + 1]] = yi[[i]] + h*f[xi[[i]], yi[[i]]];
+   OutputDetails = Append[OutputDetails, {i, xi[[i + 1]], yi[[i + 1]]}]
+  ];
+  
+  (* Display results as a grid *)
+  Grid[
+   Prepend[
+    OutputDetails,
+    {"i", "xi", "yi"}
+   ],
+   Frame -> All,
+   Alignment -> {Center, Center}
+  ]
+];
+
+(* Define the function to solve *)
+f[x_, y_] := 2*x + y;
+
+(* Execute Euler's Method *)
+eulerMethod[0, 1, 0.2, f, 1]
