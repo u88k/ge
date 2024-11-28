@@ -1,0 +1,24 @@
+NewtonRapshon[x0_, max_, err_] := Module[{}, 
+  k = 0;
+  p0 = N[x0];
+  p1 = p0;
+  Print["n x0 f[x0] f'[x0] x1"];
+  While[(k < max && Abs[f[p1]] > err), 
+   p0 = p1;
+   If[f'[p0] == 0, 
+    Print["p0 is not correct"]; 
+    Exit[];, 
+    p1 = p0 - f[p0]/f'[p0];
+    k = k + 1;
+   ];
+   Print[k, " ", PaddedForm[N[p0, 16], {10, 6}], " ", 
+    PaddedForm[N[f[p0], 16], {10, 6}], " ", 
+    PaddedForm[N[f'[p0], 16], {10, 6}], " ", 
+    PaddedForm[N[p1], {10, 6}]];
+  ];
+  Print["P after ", k, " iteration = ", NumberForm[p1, 16]];
+  Print["f[p] = ", NumberForm[f[p1], 16]];
+];
+
+f[x_] := x^3 + 2 x^2 - 3 x - 1;
+NewtonRapshon[2, 13, 10^-8];
