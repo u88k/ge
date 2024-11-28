@@ -1,0 +1,15 @@
+Regularfalsi[a0_, b0_, tol_, m_] := 
+ Module[{a = N[a0], b = N[b0]}, 
+  If[f[a]*f[b] > 0, 
+   Print["Interval is not correct"]; Exit[];, 
+   Print["n  a  b  c  f(c)"];
+   c = (a*f[b] - b*f[a])/(f[b] - f[a]);
+  k = 0;
+  While [k < m && Abs[f[c]] > tol, If[Sign[f[b]] == Sign[f[c]], tempa = a; tempb = b; b = c, tempa = a; tempb = b; a = c];
+    c = (a*f[b] - b*f[a])/(f[b] - f[a]);
+    k = k + 1;
+   Print[PaddedForm[k, 5], PaddedForm[N[tempa, 16], {10, 6}], PaddedForm[N[tempb, 16], {10, 6}], PaddedForm[N[c, 16], {10, 6}], PaddedForm[N[f[c]], {10, 6}]]];
+   If[Abs[f[c]] > tol, Print["After", k, " iterations result without accuracy is : "]; Print["c = ", NumberForm[c, 16]]; Print["f[c] = ", NumberForm[f[c], 16]], Print["Accuracy is acheived and result is : "]; Print["c = ", NumberForm[c, 16]]; Print["f[c]=", NumberForm[f[c], 16]]];];];
+
+f[x_] = x^3 + 2 * x^2 +- 3*x- 1;
+Regularfalsi[1, 2, 10^-(12), 50]
