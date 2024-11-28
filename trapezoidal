@@ -1,0 +1,12 @@
+(* Define the Trapezoidal Rule function *)
+TrapezoidalRule[a_, b_, f_] := Module[
+  {k}, 
+  k = ((b - a)/2) * (f[a] + f[b]);
+  Print["Integral Value is : ", k]; 
+];
+
+(* Define the function to integrate *)
+f[x_] := 1/(1 + x);
+
+(* Evaluate the integral using the Trapezoidal Rule *)
+TrapezoidalRule[0, 1, f]
