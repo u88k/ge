@@ -1,0 +1,44 @@
+ClearAll[RungeKutta4thOrder, f, x, y]; (* Clear previous definitions *)
+
+(* Define Runge-Kutta 4th Order Method *)
+RungeKutta4thOrder[a0_, b0_, h0_, f_, y0_] := Module[
+  {a = a0, b = b0, n, h = h0, xi, yi, k1, k2, k3, k4, OutputDetails},
+  
+  (* Number of steps *)
+  n = Round[(b - a)/h];
+  
+  (* Initialize x and y values *)
+  xi = Table[a + (j - 1)*h, {j, 1, n + 1}];
+  yi = Table[0, {n + 1}];
+  yi[[1]] = y0;
+  
+  (* Initialize output details *)
+  OutputDetails = {{0, xi[[1]], y0}};
+  
+  (* Perform Runge-Kutta method *)
+  For[i = 1, i <= n, i++,
+   k1 = h * f[xi[[i]], yi[[i]]];
+   k2 = h * f[xi[[i]] + h/2, yi[[i]] + k1/2];
+   k3 = h * f[xi[[i]] + h/2, yi[[i]] + k2/2];
+   k4 = h * f[xi[[i]] + h, yi[[i]] + k3];
+   yi[[i + 1]] = yi[[i]] + (k1 + 2*k2 + 2*k3 + k4)/6;
+   OutputDetails = Append[OutputDetails, {i, N[xi[[i + 1]]], N[yi[[i + 1]]]}];
+  ];
+  
+  (* Display results as a table *)
+  Grid[
+    Prepend[
+      OutputDetails,
+      {"i", "xi", "yi"}
+    ],
+    Frame -> All,
+    Alignment -> {Center, Center}
+  ]
+];
+
+(* Define the function to solve *)
+f[x_, y_] := 2*x + y;
+
+(* Execute Runge-Kutta Method *)
+RungeKutta4thOrder[0, 1, 0.2, f, 1]
+
