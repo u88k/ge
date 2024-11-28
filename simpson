@@ -1,0 +1,18 @@
+(* Define the Simpson's Rule function *)
+SimpsonRule[a_, b_, f_] := Module[
+  {k}, 
+  k = ((b - a)/6) * (f[a] + 4*f[(a + b)/2] + f[b]); (* Apply Simpson's Rule formula *)
+  Print["Integral Value is : ", k]; (* Print the computed value *)
+];
+
+(* Example 1: Define the function and compute the integral *)
+f[x_] := x;
+SimpsonRule[0, 1, f];
+
+(* Example 2: Integral of e^(-x) *)
+f[x_] := Exp[-x];
+SimpsonRule[0, 1, f];
+
+(* Example 3: Integral of 1/(1 + x^2) *)
+f[x_] := 1/(1 + x^2);
+SimpsonRule[0, 1, f];
