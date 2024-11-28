@@ -1,0 +1,35 @@
+(* Function to calculate nth divided difference *)
+NthDividedDiff[x0_, f0_, start_, end_] := Module[
+  {x = x0, f = f0, i = start, j = end, ans},
+  If[i == j, Return[f[[i]]]];
+  ans = (NthDividedDiff[x, f, i + 1, j] - NthDividedDiff[x, f, i, j - 1])/(x[[j]] - x[[i]]);
+  Return[ans];
+];
+
+(* Function to compute Newton's Divided Difference Polynomial *)
+NewtonDDPoly[x0_, f0_] := Module[
+  {x1 = x0, f = f0, n, P, k, j},
+  n = Length[x1];
+  P[y_] = 0;
+  For[i = 1, i <= n, i++,
+   prod[y_] = 1;
+   For[k = 1, k <= i - 1, k++, prod[y_] = prod[y]* (y - x1[[k]])];
+   P[y_] = P[y] + NthDividedDiff[x1, f, 1, i]*prod[y];
+  ];
+  Return[P[y]];
+];
+
+(* Input nodes and function values *)
+nodes = {0, 1, 3};
+values = {1, 3, 55};
+
+(* Compute the Newton polynomial *)
+NewtonPoly[y_] = NewtonDDPoly[nodes, values];
+NewtonPoly[y]
+
+(* Simplify the polynomial *)
+NewtonPoly[y_] = Simplify[NewtonPoly[y]];
+NewtonPoly[y]
+
+(* Evaluate the polynomial at y = 2 *)
+NewtonPoly[2]
