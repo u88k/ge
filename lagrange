@@ -1,0 +1,22 @@
+Lagrange1[x_, f_, y_] := Module[{s = 0, m, p, prod},
+  m = Length[x];
+  For[i = 1, i <= m, i++, 
+   p = 1;
+   For[j = 1, j <= m, j++, 
+    If[j != i, 
+     prod = (y - x[[j]])/(x[[i]] - x[[j]]); 
+     p = p * prod;
+    ];
+   ];
+   s = s + p * f[[i]];
+  ];
+  Print["Function value at ", y, " is ", s];
+  Print["Absolute error = ", Abs[s - Exp[y]]];
+];
+
+x = {-1, 0, 1};
+f = {Exp[-1], 1, Exp[1]};
+
+Lagrange1[x, f, 0.5]
+Lagrange1[x, f, -0.7]
+Lagrange1[x, f, 0.3]
