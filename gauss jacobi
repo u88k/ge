@@ -1,0 +1,25 @@
+Gaussjacobi[A0_, B0_, X0_, max_] := 
+ Module[{A = N[A0], B = N[B0], i, j, k = 0, n = Length[X0], X = X0, Xold = X0}, 
+  Print["X", 0, " = ", X];
+  While[k < max, 
+   For[i = 1, i <= n, i++, 
+    X[[i]] = 
+     (B[[i]] - 
+       Sum[A[[i, j]]*Xold[[j]], {j, 1, i - 1}] - 
+       Sum[A[[i, j]]*Xold[[j]], {j, i + 1, n}])/A[[i, i]];
+   ];
+   Print["X", k + 1, " = ", NumberForm[X, 10]];
+   If[Max[Abs[X - Xold]] < 5*10^-6, 
+    Print["Solution with convergence tolerance of 5*10^-6 = ", 
+     NumberForm[X, 10]]; Break[], 
+    Xold = X;
+    k++;
+   ];
+  ];
+]
+
+A0 = {{4, 2, -1}, {2, 4, 1}, {-1, 1, 4}};
+B0 = {1, -1, 1};
+X0 = {0, 0, 0};
+
+Gaussjacobi[A0, B0, X0, 50]
